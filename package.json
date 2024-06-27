@@ -1,5 +1,5 @@
 {
-  "name": "todo-list-for-claude-ia",
+  "name": "vue-pinia-todo-list",
   "version": "0.0.0",
   "private": true,
   "type": "module",
