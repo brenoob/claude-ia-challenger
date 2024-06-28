@@ -1,24 +1,35 @@
 <template>
+    <AlertError :show="showError" message="a sua meta esta vazia" />
     <form class="form-todo-list">
-        <input class="input-todo" type="text" v-model="todo" placeholder="What needs to be done?" @keyup.enter="addtodo(todo)">
+        <input class="input-todo" type="text" v-model="todo" placeholder="o que precisa ser feito?"
+            @keyup.enter="addtodo(todo)">
         <button class="btn" @click.prevent="addtodo(todo)">Add</button>
     </form>
 </template>
 
 <script setup lang="ts">
+
 import { useStore } from '@/stores/todo';
 import { ref } from 'vue';
+import AlertError from './AlertError.vue';
 
 const store = useStore()
 
 const todo = ref<string>('')
+const showError = ref<boolean>(false)
 
 const addtodo = (item: string) => {
-    if (item.length === 0) {
+    const preventspace = item.trim()
+    if (preventspace.length === 0) {
+        showError.value = true
+        setTimeout(() => {
+            showError.value = false
+        }, 3000);
         return
     }
-    store.addTodo(item)
+    store.addTodo(preventspace)
     todo.value = ''
+    showError.value = false
 }
 
 </script>
@@ -30,7 +41,9 @@ const addtodo = (item: string) => {
     align-items: center;
     margin: 20px 0;
 }
-.input-todo, .btn {
+
+.input-todo,
+.btn {
     height: 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
